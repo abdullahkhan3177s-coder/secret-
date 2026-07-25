@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>শুভ অ্যানিভার্সারি, আদরী</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine-deep:#2b0605;
+    --wine:#4a0e0e;
+    --wine-light:#6b1414;
+    --gold:#d4af37;
+    --gold-light:#f3d38a;
+    --gold-soft:#e8c46b;
+    --cream:#fff3e0;
+    --rose:#ff6b6b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    height:100%;
+    background:radial-gradient(ellipse at top, var(--wine-light), var(--wine) 45%, var(--wine-deep) 100%);
+    font-family:'Hind Siliguri', sans-serif;
+    color:var(--cream);
+    overflow-x:hidden;
+  }
+  .bn-serif{font-family:'Tiro Bangla', serif;}
+
+  /* Floating particles */
+  #particles{
+    position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;
+  }
+  .petal{
+    position:absolute;
+    bottom:-40px;
+    font-size:18px;
+    color:var(--gold-light);
+    opacity:0.75;
+    animation:rise linear infinite;
+    filter: drop-shadow(0 0 4px rgba(212,175,55,0.6));
+  }
+  @keyframes rise{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.8; }
+    90%{ opacity:0.6; }
+    100%{ transform:translateY(-110vh) translateX(var(--drift,20px)) rotate(360deg); opacity:0; }
+  }
+
+  .scene{
+    position:relative; z-index:2;
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    padding:32px 20px;
+  }
+
+  /* ---------- SEAL SCREEN ---------- */
+  #sealScreen{
+    display:flex;
+  }
+  .frame-corner{
+    position:fixed; width:70px; height:70px; opacity:0.55; z-index:3; pointer-events:none;
+  }
+  .frame-corner svg{ width:100%; height:100%; }
+  .fc-tl{ top:14px; left:14px; }
+  .fc-tr{ top:14px; right:14px; transform:scaleX(-1);}
+  .fc-bl{ bottom:14px; left:14px; transform:scaleY(-1);}
+  .fc-br{ bottom:14px; right:14px; transform:scale(-1,-1);}
+
+  .envelope-title{
+    font-size:15px;
+    letter-spacing:3px;
+    color:var(--gold-light);
+    text-transform:uppercase;
+    margin-bottom:18px;
+    opacity:0.85;
+  }
+  .to-name{
+    font-family:'Tiro Bangla', serif;
+    font-size:clamp(32px,7vw,52px);
+    color:var(--cream);
+    margin-bottom:44px;
+    text-shadow:0 0 24px rgba(212,175,55,0.35);
+  }
+
+  .seal-wrap{
+    cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+    background:none; border:none;
+  }
+  .seal{
+    width:120px; height:120px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #c0392b, #7a1010 70%);
+    box-shadow:0 10px 30px rgba(0,0,0,0.5), inset 0 0 18px rgba(0,0,0,0.4), 0 0 0 3px var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    transition:transform 0.4s ease;
+  }
+  .seal-wrap:hover .seal{ transform:scale(1.06) rotate(-3deg); }
+  .seal::before{
+    content:"❦";
+    font-size:46px;
+    color:var(--gold-light);
+    text-shadow:0 2px 3px rgba(0,0,0,0.5);
+  }
+  .seal-hint{
+    font-size:14px;
+    color:var(--gold-soft);
+    letter-spacing:1.5px;
+  }
+
+  #sealScreen.breaking .seal{
+    animation:crack 0.6s ease forwards;
+  }
+  @keyframes crack{
+    0%{ transform:scale(1); }
+    30%{ transform:scale(1.15) rotate(4deg); }
+    60%{ transform:scale(0.3) rotate(-10deg); opacity:1;}
+    100%{ transform:scale(0); opacity:0; }
+  }
+  #sealScreen.fadeout{
+    animation:fadeOutScene 0.7s ease forwards;
+  }
+  @keyframes fadeOutScene{ to{ opacity:0; visibility:hidden; } }
+
+  /* ---------- DIARY ---------- */
+  #diaryScreen{
+    display:none;
+  }
+  #diaryScreen.show{ display:flex; }
+
+  .diary-heading{
+    font-family:'Tiro Bangla', serif;
+    font-size:clamp(26px,5vw,38px);
+    margin-bottom:6px;
+    color:var(--gold-light);
+  }
+  .diary-sub{
+    font-size:13px; letter-spacing:2px; color:rgba(255,243,224,0.6); margin-bottom:36px;
+    text-transform:uppercase;
+  }
+
+  .book{
+    width:min(560px, 90vw);
+    min-height:360px;
+    background:linear-gradient(160deg,#fff8ec,#f3e6c8);
+    border-radius:6px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.6), 0 0 40px rgba(212,175,55,0.15);
+    position:relative;
+    padding:40px 36px 34px;
+    color:#4a1010;
+    display:flex; flex-direction:column;
+    justify-content:space-between;
+  }
+  .book::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:10px;
+    background:linear-gradient(90deg, rgba(122,16,16,0.35), transparent);
+    border-radius:6px 0 0 6px;
+  }
+  .page-number{
+    position:absolute; top:16px; right:22px;
+    font-size:12px; color:#8a6b2f; letter-spacing:1px;
+  }
+  .page-text{
+    font-family:'Tiro Bangla', serif;
+    font-size:clamp(19px,3.4vw,24px);
+    line-height:1.85;
+    text-align:center;
+    opacity:0;
+    animation:pageIn 0.6s ease forwards;
+  }
+  @keyframes pageIn{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .page-icon{
+    font-size:26px; color:var(--wine); margin-bottom:16px; display:block;
+  }
+
+  .book-controls{
+    display:flex; align-items:center; justify-content:space-between; margin-top:28px;
+  }
+  .nav-btn{
+    background:var(--wine);
+    color:var(--gold-light);
+    border:1px solid var(--gold);
+    border-radius:30px;
+    padding:10px 20px;
+    font-family:'Hind Siliguri', sans-serif;
+    font-size:14px;
+    cursor:pointer;
+    transition:all 0.25s ease;
+  }
+  .nav-btn:hover{ background:var(--gold); color:var(--wine-deep); }
+  .nav-btn:disabled{ opacity:0.3; cursor:default; }
+  .nav-btn:disabled:hover{ background:var(--wine); color:var(--gold-light); }
+
+  .dots{ display:flex; gap:7px; }
+  .dot{ width:7px; height:7px; border-radius:50%; background:rgba(122,16,16,0.25); transition:all 0.3s ease; }
+  .dot.active{ background:var(--wine); width:20px; border-radius:5px; }
+
+  .final-note{
+    display:none;
+    margin-top:30px;
+    font-family:'Tiro Bangla', serif;
+    font-size:15px;
+    color:rgba(255,243,224,0.7);
+  }
+  .final-note.show{ display:block; }
+  .heart-burst{
+    display:none;
+    font-size:34px;
+    margin-top:14px;
+  }
+  .heart-burst.show{ display:block; animation:pulseHeart 1.4s ease infinite; }
+  @keyframes pulseHeart{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.18); }
+  }
+
+  @media (max-width:480px){
+    .book{ padding:30px 22px 26px; min-height:320px; }
+  }
+
+  /* ---------- FINALE SCREEN ---------- */
+  #finaleScreen{
+    display:none;
+    position:relative;
+    overflow:hidden;
+    background:radial-gradient(ellipse at center, #1a0303, #000 90%);
+  }
+  #finaleScreen.show{ display:flex; }
+  #fireworksCanvas{
+    position:absolute; inset:0; width:100%; height:100%; z-index:1;
+  }
+  .finale-content{
+    position:relative; z-index:2;
+    display:flex; flex-direction:column; align-items:center;
+    animation:finaleIn 1s ease forwards;
+  }
+  @keyframes finaleIn{
+    from{ opacity:0; transform:scale(0.85); }
+    to{ opacity:1; transform:scale(1); }
+  }
+  .finale-title{
+    font-size:clamp(28px,6vw,44px);
+    color:var(--gold-light);
+    text-shadow:0 0 30px rgba(212,175,55,0.6);
+    margin-bottom:8px;
+  }
+  .finale-name{
+    font-size:clamp(36px,8vw,60px);
+    color:var(--cream);
+    text-shadow:0 0 24px rgba(255,107,107,0.5);
+    margin-bottom:20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div class="frame-corner fc-tl"><svg viewBox="0 0 70 70"><path d="M2 2 Q2 40 40 40" stroke="#d4af37" stroke-width="1.5" fill="none"/><circle cx="2" cy="2" r="3" fill="#d4af37"/></svg></div>
+<div class="frame-corner fc-tr"><svg viewBox="0 0 70 70"><path d="M2 2 Q2 40 40 40" stroke="#d4af37" stroke-width="1.5" fill="none"/><circle cx="2" cy="2" r="3" fill="#d4af37"/></svg></div>
+<div class="frame-corner fc-bl"><svg viewBox="0 0 70 70"><path d="M2 2 Q2 40 40 40" stroke="#d4af37" stroke-width="1.5" fill="none"/><circle cx="2" cy="2" r="3" fill="#d4af37"/></svg></div>
+<div class="frame-corner fc-br"><svg viewBox="0 0 70 70"><path d="M2 2 Q2 40 40 40" stroke="#d4af37" stroke-width="1.5" fill="none"/><circle cx="2" cy="2" r="3" fill="#d4af37"/></svg></div>
+
+<!-- SEAL SCREEN -->
+<div class="scene" id="sealScreen">
+  <div class="envelope-title">একটি চিঠি এসেছে</div>
+  <div class="to-name">প্রিয় আদরী,</div>
+  <button class="seal-wrap" id="sealBtn" aria-label="খুলুন">
+    <div class="seal"></div>
+    <div class="seal-hint">সীলমোহরে ছুঁয়ে খুলুন</div>
+  </button>
+</div>
+
+<!-- DIARY SCREEN -->
+<div class="scene" id="diaryScreen">
+  <div class="diary-heading">আমাদের গল্প</div>
+
+  <div class="book">
+    <div class="page-number" id="pageNum">১ / ৬</div>
+    <div>
+      <span class="page-icon" id="pageIcon">✦</span>
+      <p class="page-text" id="pageText"></p>
+    </div>
+    <div>
+      <div class="book-controls">
+        <button class="nav-btn" id="prevBtn">← আগের পাতা</button>
+        <div class="dots" id="dots"></div>
+        <button class="nav-btn" id="nextBtn">পরের পাতা →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINALE SCREEN -->
+<div class="scene" id="finaleScreen">
+  <canvas id="fireworksCanvas"></canvas>
+  <div class="finale-content">
+    <div class="finale-title bn-serif">শুভ বিবাহ বার্ষিকী</div>
+    <div class="finale-name bn-serif">আদরী</div>
+    <div class="heart-burst show">💛</div>
+    <div class="final-note bn-serif show">— তোমার মানুষ</div>
+  </div>
+</div>
+
+<script>
+// Floating petals/hearts background
+const particlesEl = document.getElementById('particles');
+const symbols = ['♥','❀','✦','♡'];
+for(let i=0;i<26;i++){
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+  p.style.left = Math.random()*100 + 'vw';
+  p.style.fontSize = (12 + Math.random()*14) + 'px';
+  p.style.setProperty('--drift', (Math.random()*80-40) + 'px');
+  const duration = 9 + Math.random()*10;
+  p.style.animationDuration = duration + 's';
+  p.style.animationDelay = (Math.random()*duration) + 's';
+  particlesEl.appendChild(p);
+}
+
+// Seal open -> diary
+const sealScreen = document.getElementById('sealScreen');
+const diaryScreen = document.getElementById('diaryScreen');
+document.getElementById('sealBtn').addEventListener('click', () => {
+  sealScreen.classList.add('breaking');
+  setTimeout(() => {
+    sealScreen.classList.add('fadeout');
+  }, 350);
+  setTimeout(() => {
+    sealScreen.style.display = 'none';
+    diaryScreen.classList.add('show');
+  }, 1000);
+});
+
+// Diary pages content
+const pages = [
+  { icon:'✦', text:'তোমাকে একনজর দেখার জন্য মন কত বাহানাই না খুঁজে বের করত। প্রতিটা বাহানার আড়ালে লুকিয়ে থাকত শুধু একটাই ইচ্ছা — তোমার কাছাকাছি থাকা।' },
+  { icon:'❀', text:'অনেক কষ্টে, এটা-ওটা বুঝিয়ে অবশেষে তোমাকে মনের কথাটা বলেই ফেললাম।' },
+  { icon:'♥', text:'তুমি প্রথমে বিষয়টা সিরিয়াসলি নাওনি। ভেবেছিলে হয়তো আমাদের বিয়ে পর্যন্ত গড়াবে না।' },
+  { icon:'✦', text:'কিন্তু দেখো, অবশেষে আমাদের বিয়ে হয়ে গেল।' },
+  { icon:'♡', text:'বিয়ের পর অনেক কষ্টের সময় গেছে। আমার কারণে তোমাকে অনেক কষ্ট দিয়েছি, সেটা আমি জানি।' },
+  { icon:'♥', text:'কিন্তু তুমি কখনো আমাকে ছেড়ে যাওনি। প্রতিটা বিপদে সবসময় আমার পাশে থেকেছ।' },
+];
+
+let current = 0;
+const pageText = document.getElementById('pageText');
+const pageIcon = document.getElementById('pageIcon');
+const pageNum = document.getElementById('pageNum');
+const dotsWrap = document.getElementById('dots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+function toBn(num){
+  return String(num).split('').map(d => bnDigits[parseInt(d)]).join('');
+}
+
+pages.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0 ? ' active' : '');
+  dotsWrap.appendChild(d);
+});
+
+function renderPage(){
+  const p = pages[current];
+  pageText.style.animation = 'none';
+  void pageText.offsetWidth;
+  pageText.style.animation = null;
+  pageText.textContent = p.text;
+  pageIcon.textContent = p.icon;
+  pageNum.textContent = toBn(current+1) + ' / ' + toBn(pages.length);
+  [...dotsWrap.children].forEach((d,i) => d.classList.toggle('active', i===current));
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === pages.length - 1 ? 'শুভ বিবাহ বার্ষিকী ✨' : 'পরের পাতা →';
+}
+
+prevBtn.addEventListener('click', () => {
+  if(current > 0){ current--; renderPage(); }
+});
+nextBtn.addEventListener('click', () => {
+  if(current < pages.length - 1){
+    current++; renderPage();
+  } else {
+    diaryScreen.classList.remove('show');
+    diaryScreen.style.display = 'none';
+    finaleScreen.classList.add('show');
+    startFireworks();
+  }
+});
+
+renderPage();
+
+// ---------- FINALE FIREWORKS ----------
+const finaleScreen = document.getElementById('finaleScreen');
+const canvas = document.getElementById('fireworksCanvas');
+const ctx = canvas.getContext('2d');
+let fwRunning = false;
+let fireworks = [];
+let particles = [];
+
+function resizeCanvas(){
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+
+function randColor(){
+  const colors = ['#d4af37','#f3d38a','#ff6b6b','#fff3e0','#e8c46b'];
+  return colors[Math.floor(Math.random()*colors.length)];
+}
+
+function launchFirework(){
+  const x = Math.random()*canvas.width;
+  const targetY = canvas.height*0.2 + Math.random()*canvas.height*0.3;
+  fireworks.push({
+    x, y: canvas.height, targetY,
+    color: randColor(),
+    speed: 6 + Math.random()*3
+  });
+}
+
+function explode(x, y, color){
+  const count = 40 + Math.floor(Math.random()*20);
+  for(let i=0;i<count;i++){
+    const angle = (Math.PI*2*i)/count;
+    const speed = 1.5 + Math.random()*3.5;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+      alpha: 1,
+      color
+    });
+  }
+}
+
+function fwTick(){
+  if(!fwRunning) return;
+  ctx.fillStyle = 'rgba(0,0,0,0.18)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  fireworks.forEach((f, i) => {
+    f.y -= f.speed;
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, 2.5, 0, Math.PI*2);
+    ctx.fillStyle = f.color;
+    ctx.fill();
+    if(f.y <= f.targetY){
+      explode(f.x, f.y, f.color);
+      fireworks.splice(i,1);
+    }
+  });
+
+  particles.forEach((p, i) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.03;
+    p.alpha -= 0.012;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = Math.max(p.alpha,0);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    if(p.alpha <= 0) particles.splice(i,1);
+  });
+
+  requestAnimationFrame(fwTick);
+}
+
+let fwLauncher;
+function startFireworks(){
+  resizeCanvas();
+  fwRunning = true;
+  fwTick();
+  launchFirework();
+  fwLauncher = setInterval(launchFirework, 700);
+}
+
+</script>
+
+</body>
+</html>
